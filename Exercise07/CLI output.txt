@@ -1,0 +1,228 @@
+# Compile all six programs
+mpicc -Wall -Wextra -o Exercise01/sum_bcast Exercise01/sum_bcast.c
+mpicc -Wall -Wextra -o Exercise02/sum_scatter Exercise02/sum_scatter.c
+mpicc -Wall -Wextra -o Exercise03/sum_gather Exercise03/sum_gather.c
+mpicc -Wall -Wextra -o Exercise04/sum_reduce Exercise04/sum_reduce.c
+mpicc -Wall -Wextra -o Exercise05/sum_allreduce Exercise05/sum_allreduce.c
+mpicc -Wall -Wextra -o Exercise06/sum_scan Exercise06/sum_scan.c
+
+donempirun --oversubscribe -np "$np" ./Exercise06/sum_scaneduce
+========================================
+Running with 2 processes
+========================================
+--- Exercise 1: MPI_Bcast ---
+Root filled array with values 1 to 1000000
+  Rank 1: summed indices [500000, 1000000) => local_sum = 375000250000
+  Rank 0: summed indices [0, 500000) => local_sum = 125000250000
+
+[Bcast] Total sum   = 500000500000
+[Bcast] Expected    = 500000500000
+[Bcast] Correct?    = YES
+[Bcast] Time        = 0.0068 sec
+--- Exercise 2: MPI_Scatter ---
+Root filled array with values 1 to 1000000
+  Rank 1: summed indices [500000, 1000000) => local_sum = 375000250000
+  Rank 0: summed indices [0, 500000) => local_sum = 125000250000
+
+[Scatter] Total sum = 500000500000
+[Scatter] Expected  = 500000500000
+[Scatter] Correct?  = YES
+[Scatter] Time      = 0.0039 sec
+--- Exercise 3: MPI_Gather ---
+Root filled array with values 1 to 1000000
+  Rank 1: summed indices [500000, 1000000) => local_sum = 375000250000
+  Rank 0: summed indices [0, 500000) => local_sum = 125000250000
+
+[Gather] Total sum = 500000500000
+[Gather] Expected  = 500000500000
+[Gather] Correct?  = YES
+[Gather] Time      = 0.0031 sec
+--- Exercise 4: MPI_Reduce ---
+Root filled array with values 1 to 1000000
+  Rank 0: summed indices [0, 500000) => local_sum = 125000250000
+  Rank 1: summed indices [500000, 1000000) => local_sum = 375000250000
+
+[Reduce] Total sum = 500000500000
+[Reduce] Expected  = 500000500000
+[Reduce] Correct?  = YES
+[Reduce] Time      = 0.0089 sec
+--- Exercise 5: MPI_Allreduce ---
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 125000250000, total_sum = 500000500000, contribution = 25.00%
+
+[Allreduce] Total sum = 500000500000
+[Allreduce] Expected  = 500000500000
+[Allreduce] Correct?  = YES
+[Allreduce] Time      = 0.0055 sec
+Rank 1: local_sum = 375000250000, total_sum = 500000500000, contribution = 75.00%
+--- Exercise 6: MPI_Scan ---
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 125000250000, prefix_sum = 125000250000, sum_before_me = 0, correct_prefix = YES
+Rank 1: local_sum = 375000250000, prefix_sum = 500000500000, sum_before_me = 125000250000, correct_prefix = YES
+
+[Scan] Final prefix = 500000500000
+[Scan] Expected     = 500000500000
+[Scan] Correct?     = YES
+[Scan] Time         = 0.0131 sec
+========================================
+Running with 4 processes
+========================================
+--- Exercise 1: MPI_Bcast ---
+Root filled array with values 1 to 1000000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+
+[Bcast] Total sum   = 500000500000
+[Bcast] Expected    = 500000500000
+[Bcast] Correct?    = YES
+[Bcast] Time        = 0.0289 sec
+--- Exercise 2: MPI_Scatter ---
+Root filled array with values 1 to 1000000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+
+[Scatter] Total sum = 500000500000
+[Scatter] Expected  = 500000500000
+[Scatter] Correct?  = YES
+[Scatter] Time      = 0.0037 sec
+--- Exercise 3: MPI_Gather ---
+Root filled array with values 1 to 1000000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+
+[Gather] Total sum = 500000500000
+[Gather] Expected  = 500000500000
+[Gather] Correct?  = YES
+[Gather] Time      = 0.0061 sec
+--- Exercise 4: MPI_Reduce ---
+Root filled array with values 1 to 1000000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+
+[Reduce] Total sum = 500000500000
+[Reduce] Expected  = 500000500000
+[Reduce] Correct?  = YES
+[Reduce] Time      = 0.0029 sec
+--- Exercise 5: MPI_Allreduce ---
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 31250125000, total_sum = 500000500000, contribution = 6.25%
+
+[Allreduce] Total sum = 500000500000
+[Allreduce] Expected  = 500000500000
+[Allreduce] Correct?  = YES
+[Allreduce] Time      = 0.0177 sec
+Rank 2: local_sum = 156250125000, total_sum = 500000500000, contribution = 31.25%
+Rank 1: local_sum = 93750125000, total_sum = 500000500000, contribution = 18.75%
+Rank 3: local_sum = 218750125000, total_sum = 500000500000, contribution = 43.75%
+--- Exercise 6: MPI_Scan ---
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 31250125000, prefix_sum = 31250125000, sum_before_me = 0, correct_prefix = YES
+Rank 1: local_sum = 93750125000, prefix_sum = 125000250000, sum_before_me = 31250125000, correct_prefix = YES
+Rank 2: local_sum = 156250125000, prefix_sum = 281250375000, sum_before_me = 125000250000, correct_prefix = YES
+Rank 3: local_sum = 218750125000, prefix_sum = 500000500000, sum_before_me = 281250375000, correct_prefix = YES
+
+[Scan] Final prefix = 500000500000
+[Scan] Expected     = 500000500000
+[Scan] Correct?     = YES
+[Scan] Time         = 0.0376 sec
+========================================
+Running with 8 processes
+========================================
+--- Exercise 1: MPI_Bcast ---
+Root filled array with values 1 to 1000000
+  Rank 1: summed indices [125000, 250000) => local_sum = 23437562500
+  Rank 3: summed indices [375000, 500000) => local_sum = 54687562500
+  Rank 7: summed indices [875000, 1000000) => local_sum = 117187562500
+  Rank 5: summed indices [625000, 750000) => local_sum = 85937562500
+  Rank 6: summed indices [750000, 875000) => local_sum = 101562562500
+  Rank 2: summed indices [250000, 375000) => local_sum = 39062562500
+  Rank 4: summed indices [500000, 625000) => local_sum = 70312562500
+  Rank 0: summed indices [0, 125000) => local_sum = 7812562500
+
+[Bcast] Total sum   = 500000500000
+[Bcast] Expected    = 500000500000
+[Bcast] Correct?    = YES
+[Bcast] Time        = 0.0093 sec
+--- Exercise 2: MPI_Scatter ---
+Root filled array with values 1 to 1000000
+  Rank 6: summed indices [750000, 875000) => local_sum = 101562562500
+  Rank 2: summed indices [250000, 375000) => local_sum = 39062562500
+  Rank 7: summed indices [875000, 1000000) => local_sum = 117187562500
+  Rank 1: summed indices [125000, 250000) => local_sum = 23437562500
+  Rank 5: summed indices [625000, 750000) => local_sum = 85937562500
+  Rank 3: summed indices [375000, 500000) => local_sum = 54687562500
+  Rank 4: summed indices [500000, 625000) => local_sum = 70312562500
+  Rank 0: summed indices [0, 125000) => local_sum = 7812562500
+
+[Scatter] Total sum = 500000500000
+[Scatter] Expected  = 500000500000
+[Scatter] Correct?  = YES
+[Scatter] Time      = 0.0034 sec
+--- Exercise 3: MPI_Gather ---
+Root filled array with values 1 to 1000000
+  Rank 4: summed indices [500000, 625000) => local_sum = 70312562500
+  Rank 5: summed indices [625000, 750000) => local_sum = 85937562500
+  Rank 1: summed indices [125000, 250000) => local_sum = 23437562500
+  Rank 6: summed indices [750000, 875000) => local_sum = 101562562500
+  Rank 3: summed indices [375000, 500000) => local_sum = 54687562500
+  Rank 2: summed indices [250000, 375000) => local_sum = 39062562500
+  Rank 0: summed indices [0, 125000) => local_sum = 7812562500
+  Rank 7: summed indices [875000, 1000000) => local_sum = 117187562500
+
+[Gather] Total sum = 500000500000
+[Gather] Expected  = 500000500000
+[Gather] Correct?  = YES
+[Gather] Time      = 0.0043 sec
+--- Exercise 4: MPI_Reduce ---
+Root filled array with values 1 to 1000000
+  Rank 3: summed indices [375000, 500000) => local_sum = 54687562500
+  Rank 6: summed indices [750000, 875000) => local_sum = 101562562500
+  Rank 5: summed indices [625000, 750000) => local_sum = 85937562500
+  Rank 4: summed indices [500000, 625000) => local_sum = 70312562500
+  Rank 2: summed indices [250000, 375000) => local_sum = 39062562500
+  Rank 7: summed indices [875000, 1000000) => local_sum = 117187562500
+  Rank 1: summed indices [125000, 250000) => local_sum = 23437562500
+  Rank 0: summed indices [0, 125000) => local_sum = 7812562500
+
+[Reduce] Total sum = 500000500000
+[Reduce] Expected  = 500000500000
+[Reduce] Correct?  = YES
+[Reduce] Time      = 0.0049 sec
+--- Exercise 5: MPI_Allreduce ---
+Root filled array with values 1 to 1000000
+Rank 2: local_sum = 39062562500, total_sum = 500000500000, contribution = 7.81%
+Rank 3: local_sum = 54687562500, total_sum = 500000500000, contribution = 10.94%
+Rank 7: local_sum = 117187562500, total_sum = 500000500000, contribution = 23.44%
+Rank 4: local_sum = 70312562500, total_sum = 500000500000, contribution = 14.06%
+Rank 5: local_sum = 85937562500, total_sum = 500000500000, contribution = 17.19%
+Rank 6: local_sum = 101562562500, total_sum = 500000500000, contribution = 20.31%
+Rank 1: local_sum = 23437562500, total_sum = 500000500000, contribution = 4.69%
+Rank 0: local_sum = 7812562500, total_sum = 500000500000, contribution = 1.56%
+
+[Allreduce] Total sum = 500000500000
+[Allreduce] Expected  = 500000500000
+[Allreduce] Correct?  = YES
+[Allreduce] Time      = 0.0102 sec
+--- Exercise 6: MPI_Scan ---
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 7812562500, prefix_sum = 7812562500, sum_before_me = 0, correct_prefix = YES
+Rank 1: local_sum = 23437562500, prefix_sum = 31250125000, sum_before_me = 7812562500, correct_prefix = YES
+Rank 2: local_sum = 39062562500, prefix_sum = 70312687500, sum_before_me = 31250125000, correct_prefix = YES
+Rank 3: local_sum = 54687562500, prefix_sum = 125000250000, sum_before_me = 70312687500, correct_prefix = YES
+Rank 4: local_sum = 70312562500, prefix_sum = 195312812500, sum_before_me = 125000250000, correct_prefix = YES
+Rank 5: local_sum = 85937562500, prefix_sum = 281250375000, sum_before_me = 195312812500, correct_prefix = YES
+Rank 6: local_sum = 101562562500, prefix_sum = 382812937500, sum_before_me = 281250375000, correct_prefix = YES
+Rank 7: local_sum = 117187562500, prefix_sum = 500000500000, sum_before_me = 382812937500, correct_prefix = YES
+
+[Scan] Final prefix = 500000500000
+[Scan] Expected     = 500000500000
+[Scan] Correct?     = YES
+[Scan] Time         = 0.0107 sec
