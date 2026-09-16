@@ -1,1 +1,3 @@
+Observations
 
+In this exercise, MPI_Scatter divides the complete array into equal chunks and distributes one chunk to each process. Every process calculates the sum of its local chunk, after which MPI_Reduce combines all local sums using the MPI_SUM operation and stores the final result only on the root process. This replaces the MPI_Gather operation and the manual summation loop used in Exercise 3, so the root no longer needs an array to store every partial sum. The calculated result should be 500,000,500,000. This approach requires less memory on the root and provides a simpler and more efficient method of calculating the final total, although non-root processes cannot access the reduced result after the operation.
