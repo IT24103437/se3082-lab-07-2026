@@ -1,1 +1,3 @@
+Observations
 
+In this exercise, only the root process allocates and initializes the complete array containing values from 1 to 1,000,000. MPI_Scatter divides the array into equal chunks and sends only the required chunk to each process, so every process stores and sums fewer elements than in Exercise 1. When four processes are used, each process receives and sums 250,000 elements. The non-root processes still send their local sums to the root using MPI_Send, and the root receives them one at a time using MPI_Recv before calculating the expected total of 500,000,500,000. This approach uses memory more efficiently than MPI_Bcast because non-root processes no longer store the entire array, although the root still performs a manual receive and summation loop.
