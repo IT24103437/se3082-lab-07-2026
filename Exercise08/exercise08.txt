@@ -1,0 +1,3 @@
+Observations
+
+In this exercise, a Makefile is used to manage all six MPI programs from the repository root. The default target compiles each source file with mpicc and enables the Wall and Wextra warning options. The run target first ensures that every program is compiled and then executes all six programs with four processes using mpirun. The oversubscribe option allows the programs to run even when the MPI environment reports fewer than four available processor slots. The number of processes can also be changed when invoking make by assigning a different value to NP. A clean target is included to remove all generated executable files without deleting any source files or recorded results.

@@ -1,0 +1,76 @@
+OmiraNimsath@OmiraNimsath:/mnt/c/Users/OmiraNimsath/Desktop/se3082-lab-07-2026$ make
+mpicc -Wall -Wextra -o Exercise01/sum_bcast Exercise01/sum_bcast.c
+mpicc -Wall -Wextra -o Exercise02/sum_scatter Exercise02/sum_scatter.c
+mpicc -Wall -Wextra -o Exercise03/sum_gather Exercise03/sum_gather.c
+mpicc -Wall -Wextra -o Exercise04/sum_reduce Exercise04/sum_reduce.c
+mpicc -Wall -Wextra -o Exercise05/sum_allreduce Exercise05/sum_allreduce.c
+mpicc -Wall -Wextra -o Exercise06/sum_scan Exercise06/sum_scan.c
+OmiraNimsath@OmiraNimsath:/mnt/c/Users/OmiraNimsath/Desktop/se3082-lab-07-2026$ make run
+mpirun --oversubscribe -np 4 ./Exercise01/sum_bcast
+Root filled array with values 1 to 1000000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+
+[Bcast] Total sum   = 500000500000
+[Bcast] Expected    = 500000500000
+[Bcast] Correct?    = YES
+[Bcast] Time        = 0.0291 sec
+mpirun --oversubscribe -np 4 ./Exercise02/sum_scatter
+Root filled array with values 1 to 1000000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+
+[Scatter] Total sum = 500000500000
+[Scatter] Expected  = 500000500000
+[Scatter] Correct?  = YES
+[Scatter] Time      = 0.0066 sec
+mpirun --oversubscribe -np 4 ./Exercise03/sum_gather
+Root filled array with values 1 to 1000000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+
+[Gather] Total sum = 500000500000
+[Gather] Expected  = 500000500000
+[Gather] Correct?  = YES
+[Gather] Time      = 0.0063 sec
+mpirun --oversubscribe -np 4 ./Exercise04/sum_reduce
+Root filled array with values 1 to 1000000
+  Rank 3: summed indices [750000, 1000000) => local_sum = 218750125000
+  Rank 1: summed indices [250000, 500000) => local_sum = 93750125000
+  Rank 0: summed indices [0, 250000) => local_sum = 31250125000
+  Rank 2: summed indices [500000, 750000) => local_sum = 156250125000
+
+[Reduce] Total sum = 500000500000
+[Reduce] Expected  = 500000500000
+[Reduce] Correct?  = YES
+[Reduce] Time      = 0.0089 sec
+mpirun --oversubscribe -np 4 ./Exercise05/sum_allreduce
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 31250125000, total_sum = 500000500000, contribution = 6.25%
+
+[Allreduce] Total sum = 500000500000
+[Allreduce] Expected  = 500000500000
+[Allreduce] Correct?  = YES
+[Allreduce] Time      = 0.0031 sec
+Rank 2: local_sum = 156250125000, total_sum = 500000500000, contribution = 31.25%
+Rank 3: local_sum = 218750125000, total_sum = 500000500000, contribution = 43.75%
+Rank 1: local_sum = 93750125000, total_sum = 500000500000, contribution = 18.75%
+mpirun --oversubscribe -np 4 ./Exercise06/sum_scan
+Root filled array with values 1 to 1000000
+Rank 0: local_sum = 31250125000, prefix_sum = 31250125000, sum_before_me = 0, correct_prefix = YES
+Rank 1: local_sum = 93750125000, prefix_sum = 125000250000, sum_before_me = 31250125000, correct_prefix = YES
+Rank 2: local_sum = 156250125000, prefix_sum = 281250375000, sum_before_me = 125000250000, correct_prefix = YES
+Rank 3: local_sum = 218750125000, prefix_sum = 500000500000, sum_before_me = 281250375000, correct_prefix = YES
+
+[Scan] Final prefix = 500000500000
+[Scan] Expected     = 500000500000
+[Scan] Correct?     = YES
+[Scan] Time         = 0.0173 sec
+OmiraNimsath@OmiraNimsath:/mnt/c/Users/OmiraNimsath/Desktop/se3082-lab-07-2026$ make clean
+rm -f Exercise01/sum_bcast Exercise02/sum_scatter Exercise03/sum_gather Exercise04/sum_reduce Exercise05/sum_allreduce Exercise06/sum_scan
